@@ -159,7 +159,7 @@ class MainWindow(QMainWindow):
         self.output_display.append(result)
         self.ocr_button.setEnabled(True)
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
