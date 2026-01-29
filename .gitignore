@@ -1,0 +1,5 @@
+venv/
+src/__pycache__/
+src/*.pyc
+src/config.py
+test/
