@@ -46,7 +46,7 @@ def RunClient(configuration: Configuration) -> str:
 
     # resize if image exceeds max dimensions of 10000 pixels (free OCR.space limit)
     image_file_path_root, image_file_path_extension = os.path.splitext(image_file_path)
-    if image_file_path_extension.lower() != "pdf":
+    if image_file_path_extension.lower() != ".pdf":
         image = Image.open(image_file_path)
         image_width, image_height = image.size
 
@@ -66,3 +66,13 @@ def RunClient(configuration: Configuration) -> str:
         detected_text = ocrspace_response["ParsedResults"][0]["ParsedText"]
         processing_time = ocrspace_response["ProcessingTimeInMilliseconds"]
         return f"Detected text:\n{detected_text}\n\nProcessing time:\n{processing_time} milliseconds"
+
+    # in case of an error, return the error message
+    else:
+        if ocrspace_response.get("IsErroredOnProcessing"):
+            error_message = ocrspace_response["ParsedResults"][0]["ErrorMessage"]
+            error_details = ocrspace_response["ParsedResults"][0]["ErrorDetails"]
+        else:
+            error_message = ocrspace_response["ErrorMessage"]
+            error_details = ocrspace_response["ErrorDetails"]
+        return f"Error:\n{error_message}\n\nError details:\n{error_details}"
